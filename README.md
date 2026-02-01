@@ -34,7 +34,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented required features:
 
-👉🏿<img src='https://s8.ezgif.com/tmp/ezgif-82e6202f6d1b6ffc.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='public/ezgif-2731e433830b2e27.gif' width='' alt='Video Walkthrough' />
 
 GIF created with [Ezgif](https://ezgif.com/)
 
