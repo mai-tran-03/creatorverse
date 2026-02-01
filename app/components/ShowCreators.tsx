@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router';
 import { supabase } from '~/client';
-import { InfoCard } from '../CreatorInfoCard';
+import { InfoCard } from './CreatorInfoCard';
 
 export function ShowCreators({ }) {
     const [creators, setCreators] = useState<any[]>([]);
@@ -31,7 +32,14 @@ export function ShowCreators({ }) {
     return (
         <div style={pageContainer}>
             <h1 style={titleStyle}>Creatorverse</h1>
-
+            <div style={{ textAlign: 'center', margin: '20px' }}>
+                <Link
+                    to="/add"
+                    style={floatingButtonStyle}
+                    aria-label="Add a creator">
+                    <span>+</span>
+                </Link>
+            </div>
             <div style={gridStyle}>
                 {creators.map((creator) => (
                     <InfoCard
@@ -68,4 +76,24 @@ const gridStyle: React.CSSProperties = {
     gap: '24px',
     maxWidth: '1200px',
     margin: '0 auto'
+};
+
+const floatingButtonStyle: React.CSSProperties = {
+    position: 'fixed',
+    bottom: '40px',
+    right: '40px',
+    width: '60px',
+    height: '60px',
+    borderRadius: '50%',
+    backgroundColor: '#0070f3',
+    color: 'white',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: '30px',
+    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.3)',
+    cursor: 'pointer',
+    zIndex: 1000,
+    textDecoration: 'none',
+    transition: 'transform 0.2s ease',
 };

@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { ShowCreators } from "~/components/pages/ShowCreators";
+import { ShowCreators } from "~/components/ShowCreators";
 
 export function meta({ }: Route.MetaArgs) {
   return [

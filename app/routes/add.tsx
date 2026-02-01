@@ -1,9 +1,8 @@
-import { useParams, useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
+import { use, useState } from 'react';
+import { useNavigate } from 'react-router';
 import { supabase } from '~/client';
 
-export default function EditCreator() {
-    const { id } = useParams();
+export default function AddCreator() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
         name: '',
@@ -12,33 +11,20 @@ export default function EditCreator() {
         imageURL: ''
     });
 
-    useEffect(() => {
-        async function fetchCreator() {
-            const { data } = await supabase
-                .from('creators')
-                .select('*')
-                .eq('id', id)
-                .single();
-            if (data) setFormData(data);
-        }
-        fetchCreator();
-    }, [id]);
-
     const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
         e.preventDefault();
         
         const { error } = await supabase
             .from('creators')
-            .update([formData])
-            .eq('id', id);
+            .insert([formData]);
         
-        if (!error) navigate(`/creator/${id}`);
-        else console.log("Update creator's data failed: ", error.message);
+        if (error) alert(error.message);
+        else navigate('/');
     };
 
     return (
         <form onSubmit={handleSubmit} style={formStyle}>
-            <h1 style={titleStyle}>Editing creator...</h1>
+            <h1 style={titleStyle}>Adding new creator...</h1>
             <label>Name</label>
             <input
                 value={formData.name}
@@ -74,12 +60,12 @@ export default function EditCreator() {
             <button type="submit" style={{...buttonStyle, backgroundColor: '#28a745'}}>Save ↓</button>
             <button 
                 type="button" 
-                onClick={() => navigate(`/creator/${id}`)} 
+                onClick={() => navigate(`/`)} 
                 style={{...buttonStyle, backgroundColor: '#6c757d'}}
             >Cancel ←</button>
         </form>
     )
-}
+};
 
 const titleStyle = {
     margin: '4px 0',

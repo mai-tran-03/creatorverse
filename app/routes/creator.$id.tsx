@@ -1,9 +1,10 @@
-import { useParams, Link } from 'react-router';
+import { useParams, Link, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { supabase } from '~/client';
 
 export default function CreatorDetails() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [creator, setCreator] = useState<any>(null);
     const [loading, setLoading] = useState(true);
 
@@ -24,19 +25,40 @@ export default function CreatorDetails() {
     if (loading) return <p>Loading creator...</p>;
     if (!creator) return <p>[404] Creator not found</p>;
 
+    const handleDelete = async () => {
+        const isConfirmed = window.confirm("Are you sure?");
+        if (isConfirmed) {
+            const { error } = await supabase
+                .from('creators')
+                .delete()
+                .eq('id', id);
+            if (error) alert("Error deleting creator: " + error.message);
+            else navigate('/');
+        }
+    };
+
     return (
         <div style={containerStyle}>
             <Link to='/' style={{ color: '#0070f3' }}>← Back</Link>
             <div style={contentLayout}>
                 <img src={creator.imageURL} alt={creator.name} style={imageStyle} />
                 <div style={{ paddingTop: '40px' }}>
-                    <Link
-                        to={`/edit/${id}`}
-                        style={{ ...buttonStyle, backgroundColor: '#ffc107', color: 'black' }}
-                    >Edit ✎</Link>
                     <h1 style={nameStyle}>{creator.name}</h1>
                     <p style={descriptionStyle}>{creator.description}</p>
-                    <a href={creator.url} target='_blank' style={buttonStyle}>Visit Profile</a>
+                    <a href={creator.url} target='_blank' style={buttonStyle}>Visit ↗</a>
+                    {/* <div style={{ display: 'flex' }}> */}
+                    <div style={{ marginTop: '12px', marginLeft: 'auto' }}>
+                        <Link
+                            to={`/edit/${id}`}
+                            style={{ ...buttonStyle, backgroundColor: '#ffc107', color: 'black' }}
+                        >Edit ✎</Link>
+                        <button 
+                            type='button'
+                            onClick={handleDelete}
+                            style={{ ...buttonStyle, backgroundColor: '#d9534f' }}
+                        >Delete ⌫</button>
+                    </div>
+                    {/* </div> */}
                 </div>
             </div>
         </div>
@@ -67,5 +89,5 @@ const imageStyle: React.CSSProperties = {
 };
 
 const buttonStyle: React.CSSProperties = {
-    display: 'inline-block', padding: '10px 20px', backgroundColor: '#0070f3', color: 'white', borderRadius: '5px', textDecoration: 'none'
+    display: 'inline-block', padding: '10px 20px', backgroundColor: '#0070f3', color: 'white', borderRadius: '5px', textDecoration: 'none', marginRight: '10px',
 };

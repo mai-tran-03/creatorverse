@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router'
+import { supabase } from '~/client';
 
 interface CreatorProps {
     id: number;
